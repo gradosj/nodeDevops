@@ -1,16 +1,19 @@
 {
-  "name": "mynodepop",
+  "name": "myapi",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "cross-env NODE_ENV=production node ./bin/www",
+    "dev": "cross-env DEBUG=nodeapi:* NODE_ENV=development nodemon ./bin/www",
+    "install-db": "node install-db.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
+    "cross-env": "^7.0.2",
     "debug": "~2.6.9",
+    "ejs": "~2.6.1",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
-    "jade": "~1.11.0",
     "mongoose": "^5.9.4",
     "morgan": "~1.9.1",
     "nodemon": "^2.0.2"
