@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+
+    <h1>Valores</h1>
+    <p>El valor es <%= valor %></p>
+    <p>Otro valor es <%= otroValor %></p>
+
+    <h1>Condiciones</h1>
+    <% if (condicion.estado) { %>
+      <p><%= condicion.segundo %> es par</p>
+    <% } else { %>
+      <p><%= condicion.segundo %> es impar</p>
+    <% } %>
+
+    <h1>Iterar</h1>
+    <% users.forEach(user => { %>
+      <p><%= user.name + ' ' + user.age %></p>
+    <% }) %>
+
+    <%= loquesea() %>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+
+    // // async function main() {
+    // //   axios.get()
+    // // }
+
+    // main().catch(err => console.error(err));
+  </script>
+  </body>
+</html>
