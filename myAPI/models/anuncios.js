@@ -13,6 +13,12 @@ const anuncioSchema = mongoose.Schema({
     tags: [String]
 
 });
+
+anuncioSchema.statics.lista = function (filtro) {
+    console.log(Anuncio.find);  // el .lista lo ponemos nosotros, no es nada declarado. 
+    return Anuncio.find(filtro);
+
+};
 // con el esquema creamos un modelo
 const Anuncio = mongoose.model('Anuncio', anuncioSchema);
 
