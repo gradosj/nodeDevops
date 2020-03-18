@@ -11,14 +11,19 @@ router.get('/', async (req, res, next) => {
     try {
         const nombre = req.query.nombre;
         const precio  = req.query.precio;
+        const venta = req.query.venta;
         const filtro = {};  
 
-        if (nombre) {
+        if (typeof nombre !== 'undefined') {
             filtro.nombre = nombre;
         }
 
-        if (precio){
+        if (typeof precio !== 'undefined') {
             filtro.precio = precio;
+        } 
+
+        if (venta){
+            filtro.venta = venta;
         } 
 
 
