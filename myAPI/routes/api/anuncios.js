@@ -10,10 +10,13 @@ console.log('holaaaaaaaaaaaaaaaaa');
 router.get('/', async (req, res, next) => {
     try {
         const nombre = req.query.nombre;
-        const precio  = req.query.precio;
+        const precio = req.query.precio;
         const venta = req.query.venta;
         const limit = parseInt(req.query.limit);
-        const filtro = {};  
+        const skip = parseInt(req.query.skip);
+
+
+        const filtro = {};
 
         if (typeof nombre !== 'undefined') {
             filtro.nombre = nombre;
@@ -21,16 +24,14 @@ router.get('/', async (req, res, next) => {
 
         if (typeof precio !== 'undefined') {
             filtro.precio = precio;
-        } 
+        }
 
-        if (venta){
+        if (venta) {
             filtro.venta = venta;
-        } 
+        }
 
 
-       
-
-        const docs = await Anuncio.lista(filtro, limit);
+        const docs = await Anuncio.lista(filtro, limit, skip);
         res.json(docs);
     } catch (err) {
         next(err);
