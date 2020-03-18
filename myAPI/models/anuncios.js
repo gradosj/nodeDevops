@@ -14,9 +14,12 @@ const anuncioSchema = mongoose.Schema({
 
 });
 
-anuncioSchema.statics.lista = function (filtro) {
+anuncioSchema.statics.lista = function (filtro, limit) {
     console.log(Anuncio.find);  // el .lista lo ponemos nosotros, no es nada declarado. 
-    return Anuncio.find(filtro);
+    const query = Anuncio.find(filtro); //el find no se hace hasta hacer el return, await o .exec
+
+    query.limit(limit);
+    return query.exec();
 
 };
 // con el esquema creamos un modelo

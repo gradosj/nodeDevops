@@ -12,6 +12,7 @@ router.get('/', async (req, res, next) => {
         const nombre = req.query.nombre;
         const precio  = req.query.precio;
         const venta = req.query.venta;
+        const limit = parseInt(req.query.limit);
         const filtro = {};  
 
         if (typeof nombre !== 'undefined') {
@@ -29,7 +30,7 @@ router.get('/', async (req, res, next) => {
 
        
 
-        const docs = await Anuncio.lista(filtro);
+        const docs = await Anuncio.lista(filtro, limit);
         res.json(docs);
     } catch (err) {
         next(err);
