@@ -12,8 +12,9 @@ router.get('/', async (req, res, next) => {
         const nombre = req.query.nombre;
         const precio = req.query.precio;
         const venta = req.query.venta;
-        const limit = parseInt(req.query.limit);
+        const limit = parseInt(req.query.limit || 10); // si el primero es false, te da el 10
         const skip = parseInt(req.query.skip);
+        const sort = req.query.sort;
 
 
         const filtro = {};
@@ -31,7 +32,7 @@ router.get('/', async (req, res, next) => {
         }
 
 
-        const docs = await Anuncio.lista(filtro, limit, skip);
+        const docs = await Anuncio.lista(filtro, limit, skip, sort);
         res.json(docs);
     } catch (err) {
         next(err);
