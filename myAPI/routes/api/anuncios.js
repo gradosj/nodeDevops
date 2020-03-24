@@ -9,7 +9,7 @@ console.log('holaaaaaaaaaaaaaaaaa');
 // esta sera la raiz
 router.get('/', async (req, res, next) => {
     try {
-        const nombre = req.query.nombre;
+        
         const venta = req.query.venta;
         const limit = parseInt(req.query.limit || 10); // si el primero es false, te da el 10
         const skip = parseInt(req.query.skip);
@@ -19,16 +19,17 @@ router.get('/', async (req, res, next) => {
         let precio = req.query.precio;
         let preciomax = req.query.preciomax;
         let preciomin = req.query.preciomin;
+        let nombre = req.query.nombre;
 
         console.log('Precio max: ', preciomax);
         console.log('Nombre: ', nombre);
-
-        
         
         const filtro = {};
 
         if (typeof nombre !== 'undefined') {
-            filtro.nombre = nombre;
+            filtro.nombre = new RegExp('^' + nombre, 'i');
+            
+            //filtro.nombre = nombre;
         }
 
         if (typeof precio !== 'undefined') {
@@ -48,7 +49,7 @@ router.get('/', async (req, res, next) => {
 
         if (preciomax !== undefined || preciomin !== undefined) { // si los dos vienen informados, pasamos select completa
             filtro.precio = { $gte: parseInt(preciomin), $lte: parseInt(preciomax) }
-           // si alguno de los dos no viene informado solo informamos select correpondiente
+           // si alguno de los dos no viene informado solo informamos select
             if (preciomax === undefined) {
                 filtro.precio = { $gte: parseInt(preciomin) }; 
             };
