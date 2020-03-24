@@ -10,14 +10,20 @@ console.log('holaaaaaaaaaaaaaaaaa');
 router.get('/', async (req, res, next) => {
     try {
         const nombre = req.query.nombre;
-        const precio = req.query.precio;
         const venta = req.query.venta;
         const limit = parseInt(req.query.limit || 10); // si el primero es false, te da el 10
         const skip = parseInt(req.query.skip);
         const sort = req.query.sort;
-        let tag = req.query.tags;
+        const tag = req.query.tags;
 
-        console.log(tag);
+        let precio = req.query.precio;
+        let preciomax = req.query.preciomax;
+        let preciomin = req.query.preciomin;
+
+        console.log('Precio max: ', preciomax);
+        console.log('Nombre: ', nombre);
+
+        
         
         const filtro = {};
 
@@ -37,8 +43,27 @@ router.get('/', async (req, res, next) => {
             filtro.tags = req.query.tags.split(','); //El .split separa por comas y guarda en Array. Si un anuncio tiene 2 tags no encuentra uno individual o desordenado tampoco.
             console.log(filtro.tags);
         }
-        
 
+        console.log(preciomax, preciomin);
+
+        if (preciomax !== undefined || preciomin !== undefined) { // si los dos vienen informados, pasamos select completa
+            filtro.precio = { $gte: parseInt(preciomin), $lte: parseInt(preciomax) }
+           // si alguno de los dos no viene informado solo informamos select correpondiente
+            if (preciomax === undefined) {
+                filtro.precio = { $gte: parseInt(preciomin) }; 
+            };
+
+            if (preciomin === undefined) {
+                filtro.precio = { $lte: parseInt(preciomax) }; 
+            };
+
+            console.log(" Entra por aqui preciomax:", preciomax,  "preciomin:", preciomin);
+           // filtro.precio = { $gte: parseInt(preciomin), $lte: parseInt(preciomax) }
+            
+            }
+        
+        
+        console.log(filtro);
         const docs = await Anuncio.lista(filtro, limit, skip, sort);
         res.json(docs);
     } catch (err) {
