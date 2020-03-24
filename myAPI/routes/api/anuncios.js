@@ -15,8 +15,10 @@ router.get('/', async (req, res, next) => {
         const limit = parseInt(req.query.limit || 10); // si el primero es false, te da el 10
         const skip = parseInt(req.query.skip);
         const sort = req.query.sort;
+        let tag = req.query.tags;
 
-
+        console.log(tag);
+        
         const filtro = {};
 
         if (typeof nombre !== 'undefined') {
@@ -30,7 +32,12 @@ router.get('/', async (req, res, next) => {
         if (venta) {
             filtro.venta = venta;
         }
-
+       
+        if (tag !== undefined) {
+            filtro.tags = req.query.tags.split(','); //El .split separa por comas y guarda en Array. Si un anuncio tiene 2 tags no encuentra uno individual o desordenado tampoco.
+            console.log(filtro.tags);
+        }
+        
 
         const docs = await Anuncio.lista(filtro, limit, skip, sort);
         res.json(docs);
