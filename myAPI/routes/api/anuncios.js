@@ -9,7 +9,7 @@ console.log('holaaaaaaaaaaaaaaaaa');
 // esta sera la raiz
 router.get('/', async (req, res, next) => {
     try {
-        
+
         const venta = req.query.venta;
         const limit = parseInt(req.query.limit || 10); // si el primero es false, te da el 10
         const skip = parseInt(req.query.skip);
@@ -23,12 +23,12 @@ router.get('/', async (req, res, next) => {
 
         console.log('Precio max: ', preciomax);
         console.log('Nombre: ', nombre);
-        
+
         const filtro = {};
 
         if (typeof nombre !== 'undefined') {
             filtro.nombre = new RegExp('^' + nombre, 'i');
-            
+
             //filtro.nombre = nombre;
         }
 
@@ -39,31 +39,49 @@ router.get('/', async (req, res, next) => {
         if (venta) {
             filtro.venta = venta;
         }
-       
+/*
         if (tag !== undefined) {
-            filtro.tags = req.query.tags.split(','); //El .split separa por comas y guarda en Array. Si un anuncio tiene 2 tags no encuentra uno individual o desordenado tampoco.
-            console.log(filtro.tags);
-        }
+
+            const filtrostags = req.query.tags.split(',');
+            console.log('filtrostags: ', filtrostags);
+            console.log(filtro);
+            
+
+
+            console.log('antes del for');
+            filtro.tags = {$or: [{tags: {$in:  [filtrostags]}}]};
+            console.log ('filtro total: ' ,filtro);
+
+        
+
+        }*/
+
+        console.log ('filtro total: ' ,filtro);
+
+
+        //filtro.tags =  //El .split separa por comas y guarda en Array. Si un anuncio tiene 2 tags no encuentra uno individual o desordenado tampoco.
+        /* console.log(filtro.tags);
+     }*/
 
         console.log(preciomax, preciomin);
 
         if (preciomax !== undefined || preciomin !== undefined) { // si los dos vienen informados, pasamos select completa
             filtro.precio = { $gte: parseInt(preciomin), $lte: parseInt(preciomax) }
-           // si alguno de los dos no viene informado solo informamos select
+            // si alguno de los dos no viene informado solo informamos select
             if (preciomax === undefined) {
-                filtro.precio = { $gte: parseInt(preciomin) }; 
+                filtro.precio = { $gte: parseInt(preciomin) };
             };
 
             if (preciomin === undefined) {
-                filtro.precio = { $lte: parseInt(preciomax) }; 
+                filtro.precio = { $lte: parseInt(preciomax) };
             };
 
-            console.log(" Entra por aqui preciomax:", preciomax,  "preciomin:", preciomin);
-           // filtro.precio = { $gte: parseInt(preciomin), $lte: parseInt(preciomax) }
-            
-            }
-        
-        
+            console.log(" Entra por aqui preciomax:", preciomax, "preciomin:", preciomin);
+            // filtro.precio = { $gte: parseInt(preciomin), $lte: parseInt(preciomax) }
+
+        }
+
+
         console.log(filtro);
         const docs = await Anuncio.lista(filtro, limit, skip, sort);
         res.json(docs);
