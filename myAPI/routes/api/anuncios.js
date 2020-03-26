@@ -14,7 +14,7 @@ router.get('/', async (req, res, next) => {
         const limit = parseInt(req.query.limit || 10); // si el primero es false, te da el 10
         const skip = parseInt(req.query.skip);
         const sort = req.query.sort;
-        const tag = req.query.tags;
+        const tag = req.query.tags.split(',');
 
         let precio = req.query.precio;
         let preciomax = req.query.preciomax;
@@ -39,9 +39,12 @@ router.get('/', async (req, res, next) => {
         if (venta) {
             filtro.venta = venta;
         }
-/*
-        if (tag !== undefined) {
 
+        if (tag !== undefined) {
+          //  filtro.tags = new RegExp(tag, 'i');
+
+          filtro.tags = {$all:tag},{name:1,tags:1}
+/*
             const filtrostags = req.query.tags.split(',');
             console.log('filtrostags: ', filtrostags);
             console.log(filtro);
@@ -52,11 +55,13 @@ router.get('/', async (req, res, next) => {
             filtro.tags = {$or: [{tags: {$in:  [filtrostags]}}]};
             console.log ('filtro total: ' ,filtro);
 
-        
+        */
 
-        }*/
+
+        }
 
         console.log ('filtro total: ' ,filtro);
+        console.log(JSON.stringify(filtro))
 
 
         //filtro.tags =  //El .split separa por comas y guarda en Array. Si un anuncio tiene 2 tags no encuentra uno individual o desordenado tampoco.
