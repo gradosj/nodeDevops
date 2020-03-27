@@ -14,14 +14,15 @@ router.get('/', async (req, res, next) => {
         const limit = parseInt(req.query.limit || 10); // si el primero es false, te da el 10
         const skip = parseInt(req.query.skip);
         const sort = req.query.sort;
+        const fields = req.query.fields;
         let tag = req.query.tags;
 
         let precio = req.query.precio;
-        let preciomax = req.query.preciomax;
-        let preciomin = req.query.preciomin;
+        //  let preciomax = req.query.preciomax;
+        //  let preciomin = req.query.preciomin;
         let nombre = req.query.nombre;
 
-        console.log('Precio max: ', preciomax);
+     //   console.log('Precio max: ', preciomax);
         console.log('Nombre: ', nombre);
 
         const filtro = {};
@@ -32,37 +33,37 @@ router.get('/', async (req, res, next) => {
             //filtro.nombre = nombre;
         }
 
-        if (typeof precio !== 'undefined') {
-            filtro.precio = precio;
-        }
+        // if (typeof precio !== 'undefined') {
+        //     filtro.precio = precio;
+        // }
 
         if (venta) {
             filtro.venta = venta;
         }
 
         if (tag !== undefined) {
-          //  filtro.tags = new RegExp(tag, 'i');
+            //  filtro.tags = new RegExp(tag, 'i');
 
-          tag = req.query.tags.split(',');
+            tag = req.query.tags.split(',');
 
-          filtro.tags = {$all:tag},{name:1,tags:1}
-/*
-            const filtrostags = req.query.tags.split(',');
-            console.log('filtrostags: ', filtrostags);
-            console.log(filtro);
+            filtro.tags = { $all: tag }, { name: 1, tags: 1 }
+            /*
+                        const filtrostags = req.query.tags.split(',');
+                        console.log('filtrostags: ', filtrostags);
+                        console.log(filtro);
+                        
             
-
-
-            console.log('antes del for');
-            filtro.tags = {$or: [{tags: {$in:  [filtrostags]}}]};
-            console.log ('filtro total: ' ,filtro);
-
-        */
+            
+                        console.log('antes del for');
+                        filtro.tags = {$or: [{tags: {$in:  [filtrostags]}}]};
+                        console.log ('filtro total: ' ,filtro);
+            
+                    */
 
 
         }
 
-        console.log ('filtro total: ' ,filtro);
+        console.log('filtro total: ', filtro);
         console.log(JSON.stringify(filtro))
 
 
@@ -70,27 +71,56 @@ router.get('/', async (req, res, next) => {
         /* console.log(filtro.tags);
      }*/
 
-        console.log(preciomax, preciomin);
+        //    console.log(preciomax, preciomin);
 
-        if (preciomax !== undefined || preciomin !== undefined) { // si los dos vienen informados, pasamos select completa
-            filtro.precio = { $gte: parseInt(preciomin), $lte: parseInt(preciomax) }
+        if (precio !== undefined) { // si los dos vienen informados, pasamos select completa
+
+            let precioSplit = req.query.precio.split('-');
+            console.log('Preciosplit: ', precioSplit);
+            console.log('precioSplit[0] ', precioSplit[0]);
+            console.log('precioSplit[1] ', precioSplit[1]);
+            console.log('precioSplit[1] ', typeof(precioSplit[1]));
+
+            
+            if (precioSplit[0] == '') {
+                console.log('entra en el 1');
+
+                filtro.precio = { $gte: parseInt(precioSplit[1]) }
+
+            } else if (precioSplit[1] == '') {
+                console.log('entra en el 2');
+
+                filtro.precio = { $lte: parseInt(precioSplit[0]) }
+
+               
+            } else {
+                console.log('entra en el 3');
+              
+                filtro.precio = { $gte: parseInt(precioSplit[0]), $lte: parseInt(precioSplit[1]) }
+
+            }
+
+
+
+
+            
             // si alguno de los dos no viene informado solo informamos select
-            if (preciomax === undefined) {
-                filtro.precio = { $gte: parseInt(preciomin) };
-            };
+        //    if (preciomax === undefined) {
+        //        filtro.precio = { $gte: parseInt(preciomin) };
+        //    };
 
-            if (preciomin === undefined) {
-                filtro.precio = { $lte: parseInt(preciomax) };
-            };
+        //    if (preciomin === undefined) {
+        ////        filtro.precio = { $lte: parseInt(preciomax) };
+//};
 
-            console.log(" Entra por aqui preciomax:", preciomax, "preciomin:", preciomin);
+    //        console.log(" Entra por aqui preciomax:", preciomax, "preciomin:", preciomin);
             // filtro.precio = { $gte: parseInt(preciomin), $lte: parseInt(preciomax) }
 
         }
 
 
         console.log(filtro);
-        const docs = await Anuncio.lista(filtro, limit, skip, sort);
+        const docs = await Anuncio.lista(filtro, limit, skip, sort, fields);
         res.json(docs);
     } catch (err) {
         next(err);
