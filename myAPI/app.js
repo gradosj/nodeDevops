@@ -5,6 +5,10 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 
+
+
+
+
 var app = express();
 
 // conectar a la base de datos
@@ -22,7 +26,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use('/pdf', express.static('d:/pdfs'));
 
-app.locals.title = 'NodeAPI';
+app.locals.title = 'NodeAPI'; // variables locales en todas las vistas
 
 app.use((req, res, next) => {
   // Una de dos:

@@ -3,7 +3,7 @@ console.log('inicio anuncio.js')
 
 const mongoose = require('mongoose');
 
-//crear un esquema
+// crear un esquema
 
 const anuncioSchema = mongoose.Schema({
     nombre: String,

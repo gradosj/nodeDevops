@@ -14,7 +14,7 @@ router.get('/', async (req, res, next) => {
         const limit = parseInt(req.query.limit || 10); // si el primero es false, te da el 10
         const skip = parseInt(req.query.skip);
         const sort = req.query.sort;
-        const tag = req.query.tags.split(',');
+        let tag = req.query.tags;
 
         let precio = req.query.precio;
         let preciomax = req.query.preciomax;
@@ -42,6 +42,8 @@ router.get('/', async (req, res, next) => {
 
         if (tag !== undefined) {
           //  filtro.tags = new RegExp(tag, 'i');
+
+          tag = req.query.tags.split(',');
 
           filtro.tags = {$all:tag},{name:1,tags:1}
 /*
