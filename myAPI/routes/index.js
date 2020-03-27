@@ -1,11 +1,30 @@
 var express = require('express');
 var router = express.Router();
+
+const Anuncio = require('../models/anuncios');
 //const {query, validationResult} = require('express-validator/check');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index'); // Variable que le pasamos a la plantilla
-  
+router.get('/', async (req, res, next) => {
+  try {
+
+    let nombre = req.query.nombre;
+
+    // Variable que le pasamos a la plantilla
+    const filtro = {};
+
+    if (typeof nombre !== 'undefined') {
+      filtro.nombre = new RegExp('^' + nombre, 'i');
+
+      //filtro.nombre = nombre;
+    }
+    const docs = await Anuncio.lista(filtro);
+    
+    res.locals.anuncios = docs;
+    res.render('index');
+  } catch (err) {
+    next(err);
+  }
 });
 
 //! Duda ¿Como podemos realizar una validacion de tag ?
@@ -24,18 +43,5 @@ router.get('/api/anuncios/:tags?'), [
 
  */
 
-
-
-/*pacticar */
-router.get('/parametros/:numero', function(req, res, next) {
-  console.log(req.params);
-  const numero = req.params.numero;
-
-  res.send('otra pagina que he hechook');
-  
-});
-
-
-/*practicar */
 
 module.exports = router;

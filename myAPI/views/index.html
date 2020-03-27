@@ -1,23 +1,71 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    Mi body <%= title %>
-    
-    
 
-  <script> 
-  
-    async function main () {
-      
+<head>
+  <title><%= title %></title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+  <h1><%= title %></h1>
+  Mi body <%= title %>
+
+  <h1>Iterar</h1>
+  <style>
+    .anuncio{
+      border: 2px, black;
+      padding: 10px;
+      text-align: center;
+      margin: 5px;
 
     }
+    .foto{
+      margin: 5px;
+     /*padding: 20px; */
+    }
+
+    .nombre{
+     font-weight: bold;
+    }
+  </style>
+
+
+  <% anuncios.forEach(anuncio => { %>
+    <div class="media border">
+      <img class="align-self-start mr-3 foto" src="http://placeimg.com/300/200/people" alt="Generic placeholder image">
+      <div class="media-body">
+        <h5 class=<%= anuncio.nombre %></h5>
+      <p class="card-text nombre"> Nombre: <%= anuncio.nombre %></p>
+      <p class="card-text"> Venta: <%= anuncio.venta %></p>
+      <p class="card-text"> Precio: <%= anuncio.precio %> €</p>
+      <p class="card-text"> Tags: <%= anuncio.tags %></p>
+      <p class="card-text"><%= anuncio.foto %></p>
+      </div>
+    </div>
+
+
+
   
+
+
+
+
+
+
+  <% }) %>
+
+  <script>
+
+    async function main() {
+
+
+    }
+
   </script>
-  
-  </body>
+
+</body>
+
 </html>
