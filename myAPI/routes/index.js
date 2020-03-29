@@ -64,12 +64,12 @@ router.get('/', async (req, res, next) => {
       if (precioSplit[0] == '') {
           console.log('entra en el 1');
 
-          filtro.precio = { $gte: parseInt(precioSplit[1]) }
+          filtro.precio = { $lte: parseInt(precioSplit[1]) }
 
       } else if (precioSplit[1] == '') {
           console.log('entra en el 2');
 
-          filtro.precio = { $lte: parseInt(precioSplit[0]) }
+          filtro.precio = { $gte: parseInt(precioSplit[0]) }
 
          
       } else {
