@@ -42,7 +42,9 @@ app.use((req, res, next) => {
 /**
  * Rutas del API
  */
-app.use('/api/anuncios', require('./routes/api/anuncios'));
+//app.use('/api/anuncios', require('./routes/api/anuncios'));
+app.use('/api/anuncios', require('./routes/index'));
+app.use('/api/anuncios/post', require('./routes/api/anuncios'));
 
 /**
  * Rutas del website

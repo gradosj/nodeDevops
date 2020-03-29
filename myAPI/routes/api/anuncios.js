@@ -4,8 +4,9 @@ const express = require('express');
 const router = express.Router();
 
 const Anuncio = require('../../models/anuncios');
+const { check, validationResult } = require('express-validator');
 
-console.log('holaaaaaaaaaaaaaaaaa');
+
 // esta sera la raiz
 router.get('/', async (req, res, next) => {
     try {
@@ -18,48 +19,32 @@ router.get('/', async (req, res, next) => {
         let tag = req.query.tags;
 
         let precio = req.query.precio;
-        //  let preciomax = req.query.preciomax;
-        //  let preciomin = req.query.preciomin;
+      
         let nombre = req.query.nombre;
 
-     //   console.log('Precio max: ', preciomax);
+   
         console.log('Nombre: ', nombre);
 
         const filtro = {};
 
         if (typeof nombre !== 'undefined') {
             filtro.nombre = new RegExp('^' + nombre, 'i');
-
-            //filtro.nombre = nombre;
+   
         }
 
-        // if (typeof precio !== 'undefined') {
-        //     filtro.precio = precio;
-        // }
+ 
 
         if (venta) {
             filtro.venta = venta;
         }
 
         if (tag !== undefined) {
-            //  filtro.tags = new RegExp(tag, 'i');
+          
 
             tag = req.query.tags.split(',');
 
             filtro.tags = { $all: tag }, { name: 1, tags: 1 }
-            /*
-                        const filtrostags = req.query.tags.split(',');
-                        console.log('filtrostags: ', filtrostags);
-                        console.log(filtro);
-                        
-            
-            
-                        console.log('antes del for');
-                        filtro.tags = {$or: [{tags: {$in:  [filtrostags]}}]};
-                        console.log ('filtro total: ' ,filtro);
-            
-                    */
-
+           
 
         }
 
@@ -67,12 +52,7 @@ router.get('/', async (req, res, next) => {
         console.log(JSON.stringify(filtro))
 
 
-        //filtro.tags =  //El .split separa por comas y guarda en Array. Si un anuncio tiene 2 tags no encuentra uno individual o desordenado tampoco.
-        /* console.log(filtro.tags);
-     }*/
-
-        //    console.log(preciomax, preciomin);
-
+        
         if (precio !== undefined) { // si los dos vienen informados, pasamos select completa
 
             let precioSplit = req.query.precio.split('-');
@@ -121,6 +101,9 @@ router.get('/', async (req, res, next) => {
 
         console.log(filtro);
         const docs = await Anuncio.lista(filtro, limit, skip, sort, fields);
+        
+        
+        
         res.json(docs);
     } catch (err) {
         next(err);
@@ -150,8 +133,43 @@ router.get('/:id', async (req, res, next) => {
 });
 
 // Crea un anuncio
-router.post('/', async (req, res, next) => {
+router.post('/',
+ check('nombre').isString(),
+ check('venta').isBoolean(),
+ check('precio').isNumeric(),
+ check('foto').isString(),
+async (req, res, next) => {
     try {
+        const errors = validationResult(req);
+        let cont = 0;
+        const listaTags = ['motor', 'lifestyle', 'mobile', 'work'];
+        let encontrado = false;
+
+        console.log(listaTags.length);
+        console.log(encontrado)
+;
+        while (cont < listaTags.length && encontrado === false) {
+            console.log(req.body.tags);
+            if (listaTags[cont] === req.body.tags) {
+
+                encontrado === true;
+            } 
+            
+            cont ++;
+
+        }
+
+        if (encontrado === false ) {
+                const err = new Error('Error tags, used: motor, lifestyle, mobile, work');
+                err.status = 422;
+                return next(err); // como esta definia la viesta de errores, "enviamos el error" a la vista
+        
+        }
+    
+
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() }); //Respuesta si fallan las validaciones.
+        }
         const anuncioData = req.body;
 
         // creamos el objeto en memoria

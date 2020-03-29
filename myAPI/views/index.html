@@ -10,45 +10,65 @@
 </head>
 
 <body>
-  <h1><%= title %></h1>
-  Mi body <%= title %>
 
-  <h1>Iterar</h1>
   <style>
-    .anuncio{
+    .anuncio {
       border: 2px, black;
       padding: 10px;
       text-align: center;
       margin: 5px;
 
     }
-    .foto{
+
+    .foto {
       margin: 5px;
-     /*padding: 20px; */
+      /*padding: 20px; */
     }
 
-    .nombre{
-     font-weight: bold;
+    .nombre {
+      font-weight: bold;
+    }
+
+    .img {
+      margin: auto;
+      display: block;
     }
   </style>
 
+  <img class="img" src='/images/logonode.jpg' alt="Generic placeholder image">
 
-  <% anuncios.forEach(anuncio => { %>
-    <div class="media border">
-      <img class="align-self-start mr-3 foto" src="http://placeimg.com/300/200/people" alt="Generic placeholder image">
-      <div class="media-body">
-        <h5 class=<%= anuncio.nombre %></h5>
-      <p class="card-text nombre"> Nombre: <%= anuncio.nombre %></p>
-      <p class="card-text"> Venta: <%= anuncio.venta %></p>
-      <p class="card-text"> Precio: <%= anuncio.precio %> €</p>
-      <p class="card-text"> Tags: <%= anuncio.tags %></p>
-      <p class="card-text"><%= anuncio.foto %></p>
-      </div>
+  Tags disponibles: work, lifestyle, motor
+  y mobile
+
+   
+  <% anuncios.forEach(anuncio => { 
+    console.log('holi');
+    let venta;
+
+    if (anuncio.venta === true) {
+    
+    venta = 'Se vende';
+  } else { venta = 'Se busca'} 
+    %>
+   
+
+  <div class="media border">
+    <img class="align-self-start mr-3 foto" src="<%=anuncio.foto %>"" alt=" Generic placeholder image">
+    <div class="media-body">
+      <h5 class=<%= anuncio.nombre %></h5>
+        <p class="card-text nombre"> Nombre: <%= anuncio.nombre %></p>
+        <p class="card-text">  <%= venta %></p>
+        <p class="card-text"> Precio: <%= anuncio.precio %> €</p>
+        <p class="card-text"> Tags: <%= anuncio.tags %></p>
+
+
+
     </div>
+  </div>
 
 
 
-  
+
 
 
 
