@@ -3,15 +3,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
-
-
-
-
-
 var app = express();
 
-// conectar a la base de datos
+// connect to database
 require('./lib/connectMongoose');
 
 // view engine setup
@@ -24,25 +18,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use('/pdf', express.static('d:/pdfs'));
+
 
 app.locals.title = 'NodeAPI'; // variables locales en todas las vistas
 
 app.use((req, res, next) => {
-  // Una de dos:
-  //  - Responder
-  // res.send('que tal');
-  //  - O pasar el siguiente middleware
-  // console.log('llegó una petición de tipo', req.method);
+  
   next();
-  //  - O llamar a next con error
-  // next(new Error('esto va mal, amigo'));
+ 
 });
 
 /**
- * Rutas del API
+ * Routes
  */
-//app.use('/api/anuncios', require('./routes/api/anuncios'));
+
 app.use('/api/anuncios', require('./routes/index'));
 app.use('/api/anuncios/post', require('./routes/api/anuncios'));
 
@@ -50,7 +39,7 @@ app.use('/api/anuncios/post', require('./routes/api/anuncios'));
  * Rutas del website
  */
 app.use('/',      require('./routes/index'));
-app.use('/users', require('./routes/users'));
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

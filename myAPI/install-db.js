@@ -3,7 +3,7 @@
 const conn = require('./lib/connectMongoose');
 const Anuncio = require('./models/anuncios');
 
-console.log('control1'); 
+
 conn.once('open', async () => {
     try {
         await initAnuncios();
@@ -15,7 +15,7 @@ conn.once('open', async () => {
     
 });
 
-console.log('control2'); 
+
 
 async function initAnuncios() {
     await Anuncio.deleteMany();
@@ -24,7 +24,7 @@ async function initAnuncios() {
         nombre: 'bicicleta',
         venta: true,            
         precio: 200,
-        foto: 'bici.jpg',
+        foto: '/images/motor.jpg',
         tags: ['lifestyle', 'motor']
     },
 
@@ -32,15 +32,29 @@ async function initAnuncios() {
         nombre: 'iphone',
         venta: true,            
         precio: 500,
-        foto: 'iphone.jpg',
-        tags: ['lifestyle', 'motor']
+        foto: '/images/mobile.jpg',
+        tags: ['lifestyle', 'mobile']
     },
     {   
-        nombre: 'Pantalla',
+        nombre: 'pantalla',
         venta: false,            
-        precio: 50,
-        foto: 'pantalla.jpg',
-        tags: ['lifestyle', 'motor']
+        precio: 150,
+        foto: '/images/work.jpg',
+        tags: ['work']
+    },
+    {   
+        nombre: 'mascarilla',
+        venta: false,            
+        precio: 0.50,
+        foto: '/images/work.jpg',
+        tags: ['lifestyle', 'mobile']
+    },
+    {   
+        nombre: 'sudadera',
+        venta: false,            
+        precio: 10,
+        foto: '/images/lifestyle.jpg',
+        tags: ['lifestyle']
     },
 
     ]);
