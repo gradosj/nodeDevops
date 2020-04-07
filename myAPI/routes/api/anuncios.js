@@ -37,9 +37,7 @@ router.get('/', async (req, res, next) => {
 
         }
 
-        //    console.log('filtro total: ', filtro);
-        //    console.log(JSON.stringify(filtro))
-
+     
 
         if (precio !== undefined) {
 

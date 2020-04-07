@@ -21,6 +21,14 @@ npm run install-db.js
 ```
 
 
+Para la ejecucion del servidor
+
+```
+npm run dev
+
+```
+
+
 # Metodos
 La V1 de la API tiene dos funcionalidades, la lista y la creacion de anuncion (GEST y POST).
 
