@@ -1,3 +1,8 @@
+# DevOps 
+Direccion IP ejercicio 2 -> 18.221.250.157
+Dns Ejercicio 1 --> ec2-18-221-250-157.us-east-2.compute.amazonaws.com
+Se han servido como archivos estaticos las imagenes. 
+
 # NODEPOP - PRACTICA FUNDAMENTOS NODE
 Practica de proyecto Fundamentos Node.
 
